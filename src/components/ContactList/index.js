@@ -25,7 +25,12 @@ export default class ContactList extends Component {
                 >
                   Edit
                 </button>
-                <button className="button is-danger">Delete</button>
+                <button
+                  className="button is-danger"
+                  onClick={(e) => this.props.onDelete(contact.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           )}

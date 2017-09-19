@@ -82,6 +82,17 @@ class App extends React.Component {
     })
   }
 
+  deleteContact = (id) => {
+    const url = `http://localhost:8000/api/contact/${id}`;
+    const config = { headers: { Accept: 'application/json' } }
+    axios.delete(url, {}, config)
+    .then((res) => {
+      this.fecthContacts();
+    }).catch((err) => {
+      console.log('error',err.response);
+    })
+  }
+
   componentDidMount() {
     this.fecthContacts();
   }
@@ -92,7 +103,11 @@ class App extends React.Component {
         <Header />
         <div>
           <button className="button is-info" onClick={this.addContact}>Add Contact</button>
-          <ContactList data={this.state.contacts} onEdit={this.editContact} />
+          <ContactList
+            data={this.state.contacts}
+            onEdit={this.editContact}
+            onDelete={this.deleteContact}
+          />
         </div>
         <ContactForm
           title={this.state.formTitle}
