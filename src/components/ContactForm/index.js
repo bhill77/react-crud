@@ -6,7 +6,6 @@ export default class ContactForm extends Component {
   }
   render(){
     const contact = this.props.contact;
-    console.log(contact);
     return (
       <div className={this.props.isOpen ? 'modal is-active' : 'modal'}>
         <div className="modal-background"></div>
@@ -59,7 +58,7 @@ export default class ContactForm extends Component {
             </form>
           </section>
           <footer className="modal-card-foot">
-            <button className="button is-success">Save</button>
+            <button className="button is-success" onClick={this.props.onSubmit}>Save</button>
             <button className="button" onClick={this.props.onClose}>Cancel</button>
           </footer>
         </div>

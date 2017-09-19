@@ -11,7 +11,7 @@ class App extends React.Component {
 
     this.state = {
       formIsOpen: false,
-      currentContact: { name: '', email: '', phone: '' },
+      currentContact: { id: '', name: '', email: '', phone: '' },
       formTitle: null,
       mode: 'add'
     }
@@ -29,7 +29,7 @@ class App extends React.Component {
   }
 
   resetForm = () => {
-    this.setState({ currentContact: { name: '', email: '', phone: '' } });
+    this.setState({ currentContact: { id: '', name: '', email: '', phone: '' } });
   }
 
   closeForm = () => {
@@ -40,6 +40,21 @@ class App extends React.Component {
     const contact = this.state.currentContact;
     contact[field] = value;
     this.setState({ currentContact: contact });
+  }
+
+  saveContact = () => {
+    const url = 'http://localhost:8000/api/contact';
+    const config = { headers: { Accept: 'application/json' } }
+    const data = { ...this.state.currentContact };
+    // if(this.state.mode == 'edit')
+    //   data[_method] = 'PUT';
+
+    axios.post(url, data, config)
+    .then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log('error',err.response);
+    })
   }
 
   componentDidMount() {
@@ -61,6 +76,7 @@ class App extends React.Component {
           contact={this.state.currentContact}
           onChange={this.updateContactField}
           mode={this.state.mode}
+          onSubmit={this.saveContact}
         />
       </div>
     );
