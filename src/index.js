@@ -52,7 +52,9 @@ class App extends React.Component {
 
     axios.post(url, data, config)
     .then((res) => {
-      console.log(res);
+      const contacts = this.state.contacts;
+      contacts.push(res.data);
+      this.setState({ contacts, formIsOpen: false });
     }).catch((err) => {
       console.log('error',err.response);
     })
