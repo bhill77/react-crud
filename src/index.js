@@ -13,13 +13,14 @@ class App extends React.Component {
       formIsOpen: false,
       currentContact: { id: '', name: '', email: '', phone: '' },
       formTitle: null,
-      mode: 'add'
+      mode: 'add',
+      contacts: []
     }
   }
 
-  fecthData = () => {
-    axios.get('http://localhost:8000/api').then((res)=>{
-      console.log('success');
+  fecthContacts = () => {
+    axios.get('http://localhost:8000/api/contact').then((res)=>{
+      this.setState({ contacts: res.data });
     })
   }
 
@@ -58,7 +59,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.fecthData();
+    this.fecthContacts();
   }
 
   render() {
@@ -67,7 +68,7 @@ class App extends React.Component {
         <Header />
         <div>
           <button className="button is-info" onClick={this.addContact}>Add Contact</button>
-          <ContactList />
+          <ContactList data={this.state.contacts} />
         </div>
         <ContactForm
           title={this.state.formTitle}
