@@ -19,7 +19,12 @@ export default class ContactList extends Component {
               <td>{contact.email}</td>
               <td>{contact.phone}</td>
               <td>
-                <button className="button is-primary">Edit</button>
+                <button
+                  className="button is-primary"
+                  onClick={(e) => this.props.onEdit(contact.id)}
+                >
+                  Edit
+                </button>
                 <button className="button is-danger">Delete</button>
               </td>
             </tr>

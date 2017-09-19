@@ -29,6 +29,13 @@ class App extends React.Component {
     this.setState({ formIsOpen: true, mode: 'add' });
   }
 
+  editContact = (id) => {
+    const contact = this.state.contacts.filter((data) => {
+      return data.id == id;
+    })[0];
+    this.setState({ formIsOpen: true, currentContact: contact, mode: 'edit' })
+  }
+
   resetForm = () => {
     this.setState({ currentContact: { id: '', name: '', email: '', phone: '' } });
   }
@@ -44,17 +51,32 @@ class App extends React.Component {
   }
 
   saveContact = () => {
-    const url = 'http://localhost:8000/api/contact';
+    let url = 'http://localhost:8000/api/contact/';
     const config = { headers: { Accept: 'application/json' } }
     const data = { ...this.state.currentContact };
-    // if(this.state.mode == 'edit')
-    //   data[_method] = 'PUT';
+    if(this.state.mode == 'add'){
+      this.storeContact(url, data, config);
+    } else {
+      url = url + data.id;
+      this.updateContact(url, data, config);
+    }
+  }
 
+  storeContact = (url, data, config) => {
     axios.post(url, data, config)
     .then((res) => {
       const contacts = this.state.contacts;
       contacts.push(res.data);
       this.setState({ contacts, formIsOpen: false });
+    }).catch((err) => {
+      console.log('error',err.response);
+    })
+  }
+
+  updateContact = (url, data, config) => {
+    axios.put(url, data, config)
+    .then((res) => {
+      this.setState({ formIsOpen: false });
     }).catch((err) => {
       console.log('error',err.response);
     })
@@ -70,7 +92,7 @@ class App extends React.Component {
         <Header />
         <div>
           <button className="button is-info" onClick={this.addContact}>Add Contact</button>
-          <ContactList data={this.state.contacts} />
+          <ContactList data={this.state.contacts} onEdit={this.editContact} />
         </div>
         <ContactForm
           title={this.state.formTitle}
